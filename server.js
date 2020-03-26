@@ -88,7 +88,24 @@ app
 
   // DELETE
   .delete((req, res) => {
-    // User.findByIdAndDelete()
+    User.findByIdAndDelete(req.params.id, (err, data) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: err
+        });
+      } else if (!data) {
+        res.json({
+          success: false,
+          message: "Not Found"
+        });
+      } else {
+        res.json({
+          success: true,
+          data: data
+        });
+      }
+    });
   });
 
 const User = require("./models/User");
