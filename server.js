@@ -12,14 +12,46 @@ app.listen(port, () => {
 
 // CREATE
 app.post("/users", (req, res) => {
-  // User.create()
+  User.create(
+    {
+      name: req.body.newData.name,
+      email: req.body.newData.email,
+      password: req.body.newData.password
+    },
+    (error, data) => {
+      if (error) {
+        res.json({ success: false, message: error });
+      } else if (!data) {
+        res.json({ success: false, message: "Not found" });
+      } else {
+        res.json({ success: true, data: data });
+      }
+    }
+  );
 });
 
 app
   .route("/users/:id")
   // READ
   .get((req, res) => {
-    // User.findById()
+    User.findById(req.params.id, (error, data) => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error
+        });
+      } else if (!data) {
+        res.json({
+          success: false,
+          message: "Not found"
+        });
+      } else {
+        res.json({
+          success: true,
+          data: data
+        });
+      }
+    });
   })
   // UPDATE
   .put((req, res) => {
